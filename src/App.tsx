@@ -3,7 +3,8 @@ import { SongsList } from './components/SongsList'
 import { useEffect, useState } from 'react'
 
 function App() {
-  const [songs, setSongs] = useState([])
+  const [albums, setSongs] = useState([])
+  const [sortByYear, setSortByYear] = useState(false)
 
   const API_KEY = '9fb0033e70mshd11522b742baeacp110b03jsn9329f35607dd'
   const API_HOST = 'spotify23.p.rapidapi.com'
@@ -17,20 +18,43 @@ function App() {
     })
       .then(response => response.json())
       .then(res => {
-        setSongs(res)
+        setSongs(res.albums.items)
       })
       .catch(err => {
         console.error(err)
       })
     }, [])
 
+    const sortedAlbums = albums.sort((a, b) => {
+      if (sortByYear) {
+        return a.data.date.year - b.data.date.year
+      } else {
+        return b.data.date.year - a.data.date.year
+      }
+    }
+    )
+
+
+    const toggleSortByYear = () => {
+      setSortByYear(!sortByYear)
+    }
+
+
+    console.log(albums)
+    console.log(albums[0])
+
+
   return (
     <div className="App">
       <h1>Hello Vite + React!</h1>
-      <p>Aqui van los albumes</p>
+
+      <button onClick={toggleSortByYear}>{ sortByYear ? 'Sort by oldest' : 'Sort by newest' }</button>
+
       <div className="albumes">
-       <SongsList songs={songs}></SongsList>
-      </div>
+       { sortedAlbums.map((album, index) => (
+          <SongsList key={index} album={album.data} />
+        ))}
+      b</div>
       
     </div>
   )
