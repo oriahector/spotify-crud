@@ -9,8 +9,12 @@ function App() {
   const API_KEY = '9fb0033e70mshd11522b742baeacp110b03jsn9329f35607dd'
   const API_HOST = 'spotify23.p.rapidapi.com'
 
+  const handleDelete = (index) => {
+    console.log('delete', index)
+    }
+
   useEffect(() => {
-    fetch('https://spotify23.p.rapidapi.com/search/?q=arcade fire&type=multi&offset=0&limit=10&numberOfTopResults=5', {
+    fetch('https://spotify23.p.rapidapi.com/search/?q=arcadefire&type=multi&offset=0&limit=10&numberOfTopResults=5', {
       headers: {
         'X-RapidAPI-Key': API_KEY,
         'X-RapidAPI-Host': API_HOST
@@ -25,23 +29,17 @@ function App() {
       })
     }, [])
 
-    const sortedAlbums = albums.sort((a, b) => {
-      if (sortByYear) {
-        return a.data.date.year - b.data.date.year
-      } else {
-        return b.data.date.year - a.data.date.year
-      }
-    }
-    )
+    const sortedAlbums = sortByYear ? albums.toSorted((a, b) => b.data.date.year - a.data.date.year) : albums
 
 
     const toggleSortByYear = () => {
       setSortByYear(!sortByYear)
     }
 
+   
 
-    console.log(albums)
-    console.log(albums[0])
+
+    console.log(sortedAlbums)
 
 
   return (
@@ -52,9 +50,9 @@ function App() {
 
       <div className="albumes">
        { sortedAlbums.map((album, index) => (
-          <SongsList key={index} album={album.data} />
+          <SongsList deleteAlbum={handleDelete(index)} key={index} album={album.data} />
         ))}
-      b</div>
+      </div>
       
     </div>
   )
