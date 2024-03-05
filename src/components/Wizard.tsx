@@ -2,18 +2,18 @@ import { type Student } from '../types'
 //importar defaultWizard.svg como defaultImage
 import defaultImage from '../assets/defaultWizard.svg'
 
-interface MagicianProps {
-  magician: Student
+interface WizardProps {
+  wizard: Student
   handleDelete: () => void
 }
 
-export function Magician({ magician, handleDelete }: MagicianProps) {
+export function Wizard({ wizard, handleDelete }: WizardProps) {
   const gradient =
-    magician.house === 'Gryffindor'
+    wizard.house === 'Gryffindor'
       ? 'gryffindor-gradient'
-      : magician.house === 'Hufflepuff'
+      : wizard.house === 'Hufflepuff'
       ? 'hufflepuff-gradient'
-      : magician.house === 'Ravenclaw'
+      : wizard.house === 'Ravenclaw'
       ? 'ravenclaw-gradient'
       : 'slytherin-gradient'
 
@@ -26,26 +26,26 @@ export function Magician({ magician, handleDelete }: MagicianProps) {
         <div className="absolute -bottom-12 flex h-[88px] w-[88px] items-center justify-center rounded-full border-[2px] border-white bg-teal-950">
           <img
             className="h-full w-full rounded-full object-cover object-top"
-            src={magician.image ? magician.image : defaultImage}
-            alt={magician.name}
+            src={wizard.image ? wizard.image : defaultImage}
+            alt={wizard.name}
           />
         </div>
       </div>
       <div className="mt-16 flex flex-col items-center">
         <h4 className="text-blue-500 dark:text-white text-xl font-bold">
-          {magician.name}
+          {wizard.name}
         </h4>
         <p className="text-slate-500 text-base font-normal">
-          {magician.house}
+          {wizard.house}
         </p>
       </div>
       <div className="mt-6 mb-3 flex gap-4 md:!gap-14">
         <div className="flex flex-col items-center justify-center">
-          <h3 className="text-blue-500 text-2xl font-bold">{magician.species}</h3>
+          <h3 className="text-blue-500 text-2xl font-bold">{wizard.species}</h3>
           <p className="text-blue-900 text-sm font-normal">Specie</p>
         </div>
         <div className="flex flex-col items-center justify-center">
-          <h3 className="text-blue-500 text-2xl font-bold">{magician.dateOfBirth ? magician.dateOfBirth.slice(-4) : 'unknown'} </h3>
+          <h3 className="text-blue-500 text-2xl font-bold">{wizard.dateOfBirth ? wizard.dateOfBirth.slice(-4) : 'unknown'} </h3>
           <p className="text-blue-900 text-sm font-normal">Year of birth</p>
         </div>
       </div>

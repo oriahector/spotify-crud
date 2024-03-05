@@ -1,12 +1,12 @@
 import './App.css'
-import { Magician } from './components/Wizard'
+import { Wizard } from './components/Wizard'
 import { Footer } from './components/Footer'
 import { useEffect, useState, useRef, useMemo } from 'react'
 import { type Student } from './types.d'
 import confetti from 'canvas-confetti'
 
 function App() {
-  const [magicians, setWizard] = useState<Student[]>([])
+  const [wizards, setWizard] = useState<Student[]>([])
   const [sortAlphabetically, setSortAlphabetically] = useState(false)
   const [filterName, setFilterName] = useState<string | null>(null)
 
@@ -28,28 +28,32 @@ function App() {
       })
     }, [])
 
-    console.log(magicians)
+    console.log(wizards)
 
-    const filteredMagicians = useMemo(() => {
-      return filterName != null && filterName.length > 0 ? magicians.filter(magician => magician.name.toLowerCase().includes(filterName.toLowerCase())) : magicians
+    const filteredWizards = useMemo(() => {
+      return filterName != null && filterName.length > 0 
+      ? wizards.filter(wizard => {
+        return wizard.name.toLowerCase().includes(filterName.toLowerCase())
+      })
+        : wizards
     }
-    , [filterName, magicians])
+    , [wizards, filterName])
 
 
-    const sortedMagicians = useMemo(() => {
+    const sortedWizards = useMemo(() => {
       return sortAlphabetically
-        ? filteredMagicians.sort((a, b) => a.name.localeCompare(b.name))
-        : filteredMagicians
+        ? filteredWizards.toSorted((a, b) => a.name.localeCompare(b.name))
+        : filteredWizards
     }
-    , [sortAlphabetically, filteredMagicians])
+    , [sortAlphabetically, filteredWizards])
 
     const toggleSortAlphabetically = () => {
       setSortAlphabetically(!sortAlphabetically)
     }
 
     const deleteWizard = (id: string) => {
-      const newMagicians = magicians.filter(magician => magician.id !== id)
-      setWizard(newMagicians)
+      const newWizards = wizards.filter(wizard => wizard.id !== id)
+      setWizard(newWizards)
       confetti()
     }
 
@@ -67,27 +71,27 @@ function App() {
     <div className="flex m-auto my-5">
       <button className="bg-teal-900 text-white font-bold py-2 px-4 rounded" onClick={toggleSortAlphabetically}>{ sortAlphabetically ? 'Sort Alphabetically On' : 'Sort Alphabetically Off' }</button>
       <button className="bg-teal-900 text-white font-bold py-2 px-4 rounded mx-2" onClick={handleReset}>Reset</button>
-      <button className="bg-teal-900 text-white font-bold py-2 px-4 rounded">Add Magician</button>
+      <button className="bg-teal-900 text-white font-bold py-2 px-4 rounded">Add Wizard</button>
       <input type="text" placeholder="Search by wizard name" className="rounded-md px-3 text-sm font-medium capitalize text-deepblue-900 bg-neutral-100 ml-4" 
       onChange={(e) => setFilterName(e.target.value)}
       />
     </div>
 
 <>
- {sortedMagicians.length > 0 ? (
+ {sortedWizards.length > 0 ? (
     <div className="masonry-grid">
-      {sortedMagicians.map((magician: Student) => (
-        <Magician
-          key={magician.id}
-          handleDelete={() => deleteWizard(magician.id)}
-          magician={magician}
+      {sortedWizards.map((wizard: Student) => (
+        <Wizard
+          key={wizard.id}
+          handleDelete={() => deleteWizard(wizard.id)}
+          wizard={wizard}
         />
       ))}
     </div>
  ) : (
   <div className="flex flex-col m-auto my-5">
-       <p> There are no magicians to show</p>
-      <button className="bg-teal-900 text-white font-bold py-2 px-4 rounded">Add Magician</button>
+       <p> There are no Wizards to show</p>
+      <button className="bg-teal-900 text-white font-bold py-2 px-4 rounded">Add wizardn</button>
     </div>
  )}
 </>
