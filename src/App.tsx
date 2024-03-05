@@ -7,7 +7,6 @@ import confetti from 'canvas-confetti'
 
 function App() {
   const [magicians, setWizard] = useState<Student[]>([])
-  const [section, setSection]= useState('Movies')
   const [sortAlphabetically, setSortAlphabetically] = useState(false)
   const [filterName, setFilterName] = useState<string | null>(null)
 
@@ -31,7 +30,10 @@ function App() {
 
     console.log(magicians)
 
-    const filteredMagicians = filterName != null && filterName.length > 0 ? magicians.filter(magician => magician.name.toLowerCase().includes(filterName.toLowerCase())) : magicians
+    const filteredMagicians = useMemo(() => {
+      return filterName != null && filterName.length > 0 ? magicians.filter(magician => magician.name.toLowerCase().includes(filterName.toLowerCase())) : magicians
+    }
+    , [filterName, magicians])
 
 
     const sortedMagicians = useMemo(() => {
@@ -65,8 +67,8 @@ function App() {
     <div className="flex m-auto my-5">
       <button className="bg-teal-900 text-white font-bold py-2 px-4 rounded" onClick={toggleSortAlphabetically}>{ sortAlphabetically ? 'Sort Alphabetically On' : 'Sort Alphabetically Off' }</button>
       <button className="bg-teal-900 text-white font-bold py-2 px-4 rounded mx-2" onClick={handleReset}>Reset</button>
-      <button className="bg-teal-900 text-white font-bold py-2 px-4 rounded mx-2">Add Magician</button>
-      <input type="text" placeholder="Search by wizard name" className="rounded-md px-3 text-sm font-medium capitalize text-deepblue-900 bg-neutral-100" 
+      <button className="bg-teal-900 text-white font-bold py-2 px-4 rounded">Add Magician</button>
+      <input type="text" placeholder="Search by wizard name" className="rounded-md px-3 text-sm font-medium capitalize text-deepblue-900 bg-neutral-100 ml-4" 
       onChange={(e) => setFilterName(e.target.value)}
       />
     </div>
